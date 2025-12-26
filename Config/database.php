@@ -13,7 +13,7 @@ class DataBaseConnect{
           $this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
         }
         catch(PDOException $error){
-            die("Database connection failed");
+            throw new PDOException("Database connection failed");
         }
     }
 

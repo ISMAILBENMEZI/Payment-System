@@ -2,12 +2,14 @@
 class Client{
     private $name;
     private $email;
+    private $id;
 
     public function __construct($name , $email)
     {
         $this->setName($name);
         $this->setEmail($email);
     }
+
 
     public function getName()
     {
@@ -18,6 +20,13 @@ class Client{
     {
         return $this->email;
     }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
     public function setName($name)
     {
         $name = trim($name);
@@ -40,10 +49,14 @@ class Client{
     {
         if(empty(trim($email)) or !filter_var($email , FILTER_VALIDATE_EMAIL))
         {
-            throw new InvalidArgumentException("Email Invqlide");
+            throw new InvalidArgumentException("Email Invalide");
         }
         $this->email = $email;
     }
 
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 }
 ?>
