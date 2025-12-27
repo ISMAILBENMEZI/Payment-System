@@ -13,5 +13,8 @@ CREATE TABLE paypal(paiemrnt_id INT PRIMARY KEY, FOREIGN KEY(paiemrnt_id) REFERE
 
 CREATE TABLE virement(paiemrnt_id INT PRIMARY KEY, FOREIGN KEY(paiemrnt_id) REFERENCES paiement(id));
 
+ALTER TABLE carte_bancaire ADD card_number INT;
+ALTER TABLE paypal ADD email VARCHAR(50) , ADD password VARCHAR(200);
 
+ALTER TABLE virement ADD rib INT;
 

@@ -4,6 +4,8 @@ include_once './Entity\Client.php';
 include_once './Repository\ClientRepository.php';
 include_once './Entity/Commande.php';
 include_once './Repository/CommandeRepository.php';
+include_once './Entity/Paiement.php';
+include_once './Repository/PaiementRepository.php';
 SystemMenu();
 function SystemMenu()
 {
@@ -34,6 +36,7 @@ function ManageMenu($choice)
     $db = new DataBaseConnect();
     $ClientRepo = new ClientRepository($db);
     $CommandeRepo = new CommandeRepository($db);
+    $PaiementRepo = new PaiementRepository($db);
 
     switch ($choice) {
         case "1":
@@ -141,5 +144,53 @@ function ManageMenu($choice)
                 echo "\n" . $error->getMessage() . "\n";
                 SystemMenu();
             }
+            break;
+        case "6":
+            $clientName = trim(readline("Please Enter Customer name: "));
+            $Client = $ClientRepo->getAllClients($clientName);
+
+            try {
+                foreach ($Client as $client) {
+                    echo "Id: " . $client->getId() . "\t\t";
+                    echo "Name: " . $client->getName() . "\t\t";
+                    echo "Email: " . $client->getEmail() . "\n";
+                }
+                $ClientId = trim(readline("Please enter customer Id: "));
+                $Commandes = $CommandeRepo->getCommandeById($ClientId);
+
+                foreach ($Commandes as $Commande) {
+                    echo "Id: " . $Commande->getId() . "\t\t";
+                    echo "Total amount: " . $Commande->getMontantTotal() . "\t\t";
+                    echo "status: " . $Commande->getStatus() . "\n";
+                }
+
+                $CommandeId = trim(readline("Please enter order Id: "));
+                $Paiement = new Paiement($CommandeId);
+
+                echo "\n\n";
+                echo "┌────────────────────────────┐\n";
+                echo "│ Payment  MENU              │\n";
+                echo "├────────────────────────────┤\n";
+                echo "│ 1. Virement                │\n";
+                echo "│ 2. Carte                   │\n";
+                echo "│ 3. PayPal                  │\n";
+                echo "└────────────────────────────┘\n";
+
+                $choice = trim(readline("\n Please choose a payment method: "));
+                match ($choice) {
+                    "1" => $PaiementMethod = "Card",
+                    "2" => $PaiementMethod = "Paypale",
+                    "3" => $PaiementMethod = "Virement",
+                };
+
+                $PaiementRepo->addPaiement($Paiement, $PaiementMethod);
+            } catch (PDOException $error) {
+                echo "\n" . $error->getMessage() . "\n";
+                SystemMenu();
+            } catch (InvalidArgumentException $error) {
+                echo "\n" . $error->getMessage() . "\n";
+                SystemMenu();
+            }
+            break;
     }
 }
