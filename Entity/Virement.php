@@ -7,11 +7,10 @@ class Virement extends Paiement
     private $rib;
     private $PaiementId;
 
-    public function __construct($amount , $rib, $PaiementId)
+    public function __construct($amount,$CommandeId,$status,$rib)
     {
-        return parent::__construct($amount);
+        parent::__construct($amount,$CommandeId,$status);
         $this->rib = $rib;
-        $this->PaiementId = $PaiementId;
     }
 
     public function getRib()

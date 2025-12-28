@@ -8,12 +8,11 @@ class PayPal extends Paiement
     private $paiementPassword;
     private $PaiementId;
 
-    public function __construct($amount, $paiementEmail, $paiementPassword,$PaiementId)
+    public function __construct($amount,$CommandeId,$status,$paiementEmail, $paiementPassword)
     {
-        parent::__construct($amount);
+        parent::__construct($amount,$CommandeId,$status);
         $this->paiementEmail = $paiementEmail;
         $this->paiementPassword = $paiementPassword;
-        $this->PaiementId = $PaiementId;
     }
 
     public function getPaiementEmail()
@@ -34,7 +33,7 @@ class PayPal extends Paiement
     public function setPaiementPassword($paiementPassword)
     {
         if (empty(trim($paiementPassword)) or preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/', $paiementPassword)) {
-            $this->paiementEmail = $paiementPassword;
+            $this->paiementPassword = password_hash($paiementPassword, PASSWORD_DEFAULT);
         } else {
             throw new InvalidArgumentException("Password Invalide");
         }

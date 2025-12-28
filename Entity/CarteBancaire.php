@@ -7,11 +7,10 @@ class Carte extends Paiement
     private $crediteCardNumber;
     private $PaiementId;
 
-    public function __construct($amount, $crediteCardNumber,$PaiementId)
+    public function __construct($amount,$CommandeId, $status,$crediteCardNumber)
     {
-        parent::__construct($amount);
+        parent::__construct($amount,$CommandeId,$status);
         $this->crediteCardNumber = $crediteCardNumber;
-        $this->PaiementId = $PaiementId;
     }
 
 
@@ -27,7 +26,7 @@ class Carte extends Paiement
 
     public function setCreditCardNumber($crediteCardNumber)
     {
-        return $this->crediteCardNumber = $crediteCardNumber;
+        $this->crediteCardNumber = $crediteCardNumber;
     }
 
     public function setPaiementId($PaiementId)

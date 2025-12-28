@@ -30,6 +30,21 @@ class CommandeRepository
         }
     }
 
+    public function getCommandeByIdComm($commandeId)
+    {
+        try {
+            $query = "SELECT * FROM orders where id = :commandeId";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindparam(":commandeId", $commandeId, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total_amount'];
+
+        } catch (PDOException $error) {
+            throw new PDOException("Database error");
+        }
+    }
+
     public function getCommandeById($ClientId)
     {
         try {

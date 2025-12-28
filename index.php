@@ -147,7 +147,7 @@ function ManageMenu($choice)
             break;
         case "6":
             $clientName = trim(readline("Please Enter Customer name: "));
-            $Client = $ClientRepo->getAllClients($clientName);
+            $Client = $ClientRepo-> getClientsByName($clientName);
 
             try {
                 foreach ($Client as $client) {
@@ -165,8 +165,8 @@ function ManageMenu($choice)
                 }
 
                 $CommandeId = trim(readline("Please enter order Id: "));
-                $Paiement = new Paiement($CommandeId);
-
+                $amount =  $CommandeRepo->getCommandeByIdComm($CommandeId);
+                var_dump($amount);
                 echo "\n\n";
                 echo "┌────────────────────────────┐\n";
                 echo "│ Payment  MENU              │\n";
@@ -177,13 +177,14 @@ function ManageMenu($choice)
                 echo "└────────────────────────────┘\n";
 
                 $choice = trim(readline("\n Please choose a payment method: "));
-                match ($choice) {
-                    "1" => $PaiementMethod = "Card",
-                    "2" => $PaiementMethod = "Paypale",
-                    "3" => $PaiementMethod = "Virement",
+
+                $Paiement = match ($choice) {
+                    "1" => $PaiementRepo->paiementVirement($CommandeId,$amount),
+                    "2" => $PaiementRepo->paiementCard($CommandeId,$amount),
+                    "3" => $PaiementRepo->paiementPaypal($CommandeId, $amount)
                 };
 
-                $PaiementRepo->addPaiement($Paiement, $PaiementMethod);
+                $PaiementRepo->addPaiement($Paiement);
             } catch (PDOException $error) {
                 echo "\n" . $error->getMessage() . "\n";
                 SystemMenu();
